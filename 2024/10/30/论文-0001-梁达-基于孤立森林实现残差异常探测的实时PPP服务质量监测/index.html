@@ -1,0 +1,683 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/GREAT-WHU.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GREAT-WHU">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="【论文分享】基于孤立森林实现残差异常探测的实时PPP服务质量监测0.概述题目：基于孤立森林实现残差异常探测的实时PPP服务质量监测 原文题目：Quality Monitoring of Real-time PPP Service Using Isolation Forest-based Residual Anomaly Detection 作者：李星星，梁达，李昕*，黄健德，吴家齐，缑海龙 来源：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【论文分享】基于孤立森林实现残差异常探测的实时PPP服务质量监测">
+<meta property="og:url" content="https://great-whu.github.io/2024/10/30/%E8%AE%BA%E6%96%87-0001-%E6%A2%81%E8%BE%BE-%E5%9F%BA%E4%BA%8E%E5%AD%A4%E7%AB%8B%E6%A3%AE%E6%9E%97%E5%AE%9E%E7%8E%B0%E6%AE%8B%E5%B7%AE%E5%BC%82%E5%B8%B8%E6%8E%A2%E6%B5%8B%E7%9A%84%E5%AE%9E%E6%97%B6PPP%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F%E7%9B%91%E6%B5%8B/index.html">
+<meta property="og:site_name" content="GREAT-WHU">
+<meta property="og:description" content="【论文分享】基于孤立森林实现残差异常探测的实时PPP服务质量监测0.概述题目：基于孤立森林实现残差异常探测的实时PPP服务质量监测 原文题目：Quality Monitoring of Real-time PPP Service Using Isolation Forest-based Residual Anomaly Detection 作者：李星星，梁达，李昕*，黄健德，吴家齐，缑海龙 来源：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://great-whu.github.io/img/book_banner_img.png">
+<meta property="article:published_time" content="2024-10-30T09:35:12.000Z">
+<meta property="article:modified_time" content="2024-11-02T03:37:04.053Z">
+<meta property="article:author" content="GREAT-WHU">
+<meta property="article:tag" content="论文">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://great-whu.github.io/img/book_banner_img.png">
+  
+  
+  
+  <title>【论文分享】基于孤立森林实现残差异常探测的实时PPP服务质量监测 - GREAT-WHU</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"great-whu.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GREAT-WHU</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/book_banner_img.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="【论文分享】基于孤立森林实现残差异常探测的实时PPP服务质量监测"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-30 17:35" pubdate>
+          2024年10月30日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【论文分享】基于孤立森林实现残差异常探测的实时PPP服务质量监测</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="【论文分享】基于孤立森林实现残差异常探测的实时PPP服务质量监测"><a href="#【论文分享】基于孤立森林实现残差异常探测的实时PPP服务质量监测" class="headerlink" title="【论文分享】基于孤立森林实现残差异常探测的实时PPP服务质量监测"></a>【论文分享】基于孤立森林实现残差异常探测的实时PPP服务质量监测</h1><h2 id="0-概述"><a href="#0-概述" class="headerlink" title="0.概述"></a>0.概述</h2><p><strong>题目：基于孤立森林实现残差异常探测的实时PPP服务质量监测</strong></p>
+<p><strong>原文题目</strong>：Quality Monitoring of Real-time PPP Service Using Isolation Forest-based Residual Anomaly Detection</p>
+<p><strong>作者</strong>：李星星，梁达，李昕*，黄健德，吴家齐，缑海龙</p>
+<p><strong>来源</strong>：GPS Solutions</p>
+<p><strong>论文引用</strong>：Li, X., Liang, D., Li, X. et al. Quality monitoring of real-time PPP service using isolation forest-based residual anomaly detection. GPS Solut 28, 118 (2024). <a target="_blank" rel="noopener" href="https://doi.org/10.1007/s10291-024-01657-z">https://doi.org/10.1007/s10291-024-01657-z</a></p>
+<h2 id="1-本文亮点"><a href="#1-本文亮点" class="headerlink" title="1.本文亮点"></a>1.本文亮点</h2><p>1、  本文提出了一种实时精密产品质量监测方法，能够实时检测出精密产品中潜在的卫星故障。首先通过区域监测站网解算的非差载波相位残差构造综合监测量（UCRS），其能够反映卫星产品的故障状态。然后采用孤立森林识别UCRS中的异常值，检测潜在的卫星故障情况。并提出了一种针对故障卫星的降权方案，能够有效削弱故障卫星对定位的影响，提高用户的定位质量。</p>
+<p>2、  本文设计了两组实验，仿真实验和实时产品实验。仿真实验通过向事后精密产品中添加不同量级的模拟故障，以测试方法的故障检测效果。实验结果表明，方法对10cm、5cm的轨道故障识别成功率为100%、95%，对0.3ns、0.2ns的钟差故障识别成功率为100%、100%。实时精密产品实验中，采用本文提出的质量监测方法对7个月的实时精密产品进行故障检测，准确识别出6次卫星故障情况，并在用户端进行故障排除，定位精度能够提升24%-71%。</p>
+<h2 id="2-研究背景"><a href="#2-研究背景" class="headerlink" title="2.研究背景"></a>2.研究背景</h2><p>在实际生活的导航应用中，实现高精度定位并不是唯一的要求，定位的结果也必须是可靠和可信的。实时精密单点定位（PPP）在很大程度上依赖于精密卫星轨道和钟差产品。目前，实时精密卫星产品已经可以达到较高的精度水平。然而，实时精密卫星产品中不可避免地会出现异常或精度降低的情况。一旦这些校正包含由于系统故障或异常导致的偏差，它们可能会严重损害定位的准确性。目前，国际GNSS服务（IGS）的实时服务和实时分析中心（RTAC）的实时产品都没有提供质量信息。因此，实时卫星产品的质量监测至关重要，迫切需要构建一个稳健的实时产品质量监测系统。系统应具备检测和识别潜在故障的能力，能够及时向用户播发警报信息，确保定位的连续性和稳定性。因此，本文提出了实时精密产品质量监测方法与针对故障卫星的降权方案，能够实时检测并排除精密产品中潜在的卫星故障，保障用户的定位质量。</p>
+<h2 id="3-研究方法"><a href="#3-研究方法" class="headerlink" title="3.研究方法"></a>3.研究方法</h2><p>为了检测和排除精密产品中的潜在故障，本文构建了实时精密产品质量监测系统，总体框架设计如图1所示。质量监测系统由服务端和用户两部分组成。服务端通过接收区域监测站网观测数据来检测和识别潜在的卫星故障，以生成警报信息并进行广播。在用户端，利用针对故障卫星的降权方案进行故障排除，从而获得更加精确的PPP定位结果。</p>
+<img src="/2024/10/30/%E8%AE%BA%E6%96%87-0001-%E6%A2%81%E8%BE%BE-%E5%9F%BA%E4%BA%8E%E5%AD%A4%E7%AB%8B%E6%A3%AE%E6%9E%97%E5%AE%9E%E7%8E%B0%E6%AE%8B%E5%B7%AE%E5%BC%82%E5%B8%B8%E6%8E%A2%E6%B5%8B%E7%9A%84%E5%AE%9E%E6%97%B6PPP%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F%E7%9B%91%E6%B5%8B/freecompress-image1.jpg" srcset="/img/loading.gif" lazyload class="" title="图 1实时精密产品质量监测系统框架">
+
+
+
+<p>在服务端中，首先，区域监测站网的观测数据被传输到数据处理中心进行数据预处理。同时，接收实时精密卫星产品和实时UPD产品进行PPP AR，以获得载波相位残差。然后，将残差信息传递到UCRS计算模块中，计算当前历元中所有卫星的UCRS。对于每颗卫星，将当前历元的UCRS与先前历元的UCRS序列组合，形成一个数据集，用于孤立森林异常检测。如果检测结果为异常，则确定卫星在该历元存在故障；否则，UCRS将添加到先前历元的UCRS序列中。随后，所有被检测为有故障的卫星及其UCRS被打包在一起，形成警报信息进行广播。</p>
+<p>用户可以通过接收服务端广播的警报信息来执行故障检测排除的单点精密定位（PPP-FDE）。在PPP-FDE中，利用警报信息计算故障卫星的权重因子，使用权重因子更新观测值的权重，通过接收观测数据和实时精密产品，在解算过程中使用更新的权重信息后，用户即可获得故障排除后的定位结果。</p>
+<p>为验证所提出方法，本文设置了两组实验。其中仿真实验的目的是测试所提方法的故障检测性能，实时产品实验则为评估质量监测系统总体的故障检测性能与故障排除对定位结果的提升效果。</p>
+<h2 id="4-研究结果"><a href="#4-研究结果" class="headerlink" title="4.研究结果"></a>4.研究结果</h2><h3 id="4-1-仿真测试结果"><a href="#4-1-仿真测试结果" class="headerlink" title="4.1 仿真测试结果"></a>4.1 仿真测试结果</h3><p>在仿真实验中，我们利用了2022年1月5日30个监测站的观测数据，以及CODE提供的事后精密产品。选择事后精密产品的原因是其具备高精度和高可靠性，这使我们能够避免精密产品自身存在的故障的影响。实验分别模拟了不同量级的轨道和钟差故障（轨道10cm、5cm，钟差0.3ns、0.2ns、0.1ns），并在每个整点时刻添加到某个卫星产品中（其对应如表1所示），然后使用提出的质量监测方法检测和识别。</p>
+<img src="/2024/10/30/%E8%AE%BA%E6%96%87-0001-%E6%A2%81%E8%BE%BE-%E5%9F%BA%E4%BA%8E%E5%AD%A4%E7%AB%8B%E6%A3%AE%E6%9E%97%E5%AE%9E%E7%8E%B0%E6%AE%8B%E5%B7%AE%E5%BC%82%E5%B8%B8%E6%8E%A2%E6%B5%8B%E7%9A%84%E5%AE%9E%E6%97%B6PPP%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F%E7%9B%91%E6%B5%8B/%E8%A1%A81-%E5%9B%BE%E7%89%87.png" srcset="/img/loading.gif" lazyload class="" title="表1-图片">
+
+<p>图2显示了模拟10cm轨道故障的检测结果。左图显示了各卫星的UCRS序列，表明卫星在发生故障时UCRS会异常增大。通过利用孤立森林检测UCRS中的异常值，可以获得每颗卫星的故障时间段，如右图所示。在图中，灰色表示卫星未被监测的时段，绿色表示卫星被监测且处于正常状态的时段，红色表示卫星被识别为故障的时段。从图中可以看出，所提方法可以成功识别出所有的模拟故障。</p>
+<img src="/2024/10/30/%E8%AE%BA%E6%96%87-0001-%E6%A2%81%E8%BE%BE-%E5%9F%BA%E4%BA%8E%E5%AD%A4%E7%AB%8B%E6%A3%AE%E6%9E%97%E5%AE%9E%E7%8E%B0%E6%AE%8B%E5%B7%AE%E5%BC%82%E5%B8%B8%E6%8E%A2%E6%B5%8B%E7%9A%84%E5%AE%9E%E6%97%B6PPP%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F%E7%9B%91%E6%B5%8B/image2.jpg" srcset="/img/loading.gif" lazyload class="" title="图 2 模拟10cm轨道故障的检测结果。左图为UCRS序列图，右图为卫星可观测的时段（绿色）与被识别为故障的时段（红色）">
+
+<p>分别对不同量级模拟故障进行实验，记录每组的检测成功率，如表2所示。发现该方法对10cm的轨道故障和0.3ns、0.2ns的钟差故障能够达到100%的检测成功率，对5cm的轨道故障的检测成功率也超过了95%。</p>
+<img src="/2024/10/30/%E8%AE%BA%E6%96%87-0001-%E6%A2%81%E8%BE%BE-%E5%9F%BA%E4%BA%8E%E5%AD%A4%E7%AB%8B%E6%A3%AE%E6%9E%97%E5%AE%9E%E7%8E%B0%E6%AE%8B%E5%B7%AE%E5%BC%82%E5%B8%B8%E6%8E%A2%E6%B5%8B%E7%9A%84%E5%AE%9E%E6%97%B6PPP%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F%E7%9B%91%E6%B5%8B/%E8%A1%A82-%E5%9B%BE%E7%89%87.png" srcset="/img/loading.gif" lazyload class="" title="表2-图片">
+
+<p>为了初步分析故障检测与排除的效果，利用H053测站进行故障检测排除测试，其定位结果对比如图3所示，其中左图和右图分别对应10cm和5cm的模拟轨道故障。由于卫星轨道存在故障，PPP定位结果受到影响，导致定位偏差增大。相比之下，PPP-FDE有效地缓解了故障卫星造成的定位偏差。此外，与10cm轨道故障相比，5cm轨道故障对定位结果的影响较小。实验表明，与PPP相比，PPP-FDE可以减轻故障对定位结果的影响，从而获得更稳定和连续的定位结果。</p>
+<img src="/2024/10/30/%E8%AE%BA%E6%96%87-0001-%E6%A2%81%E8%BE%BE-%E5%9F%BA%E4%BA%8E%E5%AD%A4%E7%AB%8B%E6%A3%AE%E6%9E%97%E5%AE%9E%E7%8E%B0%E6%AE%8B%E5%B7%AE%E5%BC%82%E5%B8%B8%E6%8E%A2%E6%B5%8B%E7%9A%84%E5%AE%9E%E6%97%B6PPP%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F%E7%9B%91%E6%B5%8B/image3.jpg" srcset="/img/loading.gif" lazyload class="" title="图 3 PPP和PPP-FDE的定位误差序列。左图为模拟10cm卫星轨道故障的结果，右图是模拟5cm卫星轨道故障的结果">
+
+<h3 id="4-2-实时产品测试结果"><a href="#4-2-实时产品测试结果" class="headerlink" title="4.2 实时产品测试结果"></a>4.2 实时产品测试结果</h3><p>实时产品实验中，为了评估实际中该方法的故障检测与排除性能，利用2022年1月到7月的实时精密产品数据进行分析，从中检测出有六天的数据存在故障情况（年积日为009，011，012，014，033，185）。对这六天的数据进行PPP和PPP-FDE动态定位解算，定位结果如图4所示。图中显示了各天发生实时精密产品故障前后一小时的定位误差序列，在故障排除后，定位的稳定性有了显著提高。图5统计了PPP和PPP-FDE的3D RMS。可以发现PPP-FDE的3D RMS分别提高了29%、24%、56%、71%、30%和60%。</p>
+<img src="/2024/10/30/%E8%AE%BA%E6%96%87-0001-%E6%A2%81%E8%BE%BE-%E5%9F%BA%E4%BA%8E%E5%AD%A4%E7%AB%8B%E6%A3%AE%E6%9E%97%E5%AE%9E%E7%8E%B0%E6%AE%8B%E5%B7%AE%E5%BC%82%E5%B8%B8%E6%8E%A2%E6%B5%8B%E7%9A%84%E5%AE%9E%E6%97%B6PPP%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F%E7%9B%91%E6%B5%8B/freecompress-image4.jpg" srcset="/img/loading.gif" lazyload class="" title="图 4异常定位结果前后一小时的PPP和PPP-FDE定位误差系列">
+
+<img src="/2024/10/30/%E8%AE%BA%E6%96%87-0001-%E6%A2%81%E8%BE%BE-%E5%9F%BA%E4%BA%8E%E5%AD%A4%E7%AB%8B%E6%A3%AE%E6%9E%97%E5%AE%9E%E7%8E%B0%E6%AE%8B%E5%B7%AE%E5%BC%82%E5%B8%B8%E6%8E%A2%E6%B5%8B%E7%9A%84%E5%AE%9E%E6%97%B6PPP%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F%E7%9B%91%E6%B5%8B/image5.jpg" srcset="/img/loading.gif" lazyload class="" title="图 5定位结果异常前后一小时PPP和PPP-FDE定位误差的3D RMS统计">
+
+<p>本文对实时精密轨道和钟差产品进行了深入分析。实时精密产品的精度可以通过与事后精密产品差分的方式进行评估。图6显示了年积日009和012定位结果的异常分析。在图中，“CLK”表示CNES实时钟差产品和COD事后精密钟差产品的差值序列，而“ORB_r”表示CNES超快速轨道产品和COD事后精密轨道产品的径向差值序列。图中仅显示被检测为有故障的卫星。左图显示，2:00左右，定位误差序列出现异常。在此期间，两颗被识别为有故障的卫星G10和G23在2:00后5分钟内发生了约6cm的径向轨道偏差，导致定位误差序列发生偏移。同时，这两颗卫星的钟差差值也发生了约8cm的跳变，导致定位误差序列呈现出不连续性。在右图中，在21:08左右，定位误差序列也出现了异常。在三颗被识别为有故障的的卫星中，但它们的轨道产品都处于正常状态，然而卫星E26和E33的钟差差值发生了约20cm的跳变，导致定位误差序列发生跳变。分析表明，该方法能够成功地识别出实时精密产品中的潜在故障，并且在故障排除后，能够提升定位的精度与稳定性。</p>
+<img src="/2024/10/30/%E8%AE%BA%E6%96%87-0001-%E6%A2%81%E8%BE%BE-%E5%9F%BA%E4%BA%8E%E5%AD%A4%E7%AB%8B%E6%A3%AE%E6%9E%97%E5%AE%9E%E7%8E%B0%E6%AE%8B%E5%B7%AE%E5%BC%82%E5%B8%B8%E6%8E%A2%E6%B5%8B%E7%9A%84%E5%AE%9E%E6%97%B6PPP%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8F%E7%9B%91%E6%B5%8B/freecompress-image6.jpg" srcset="/img/loading.gif" lazyload class="" title="图 6 PPP和PPP-FDE定位误差序列，异常定位结果前后一小时内问题卫星的钟差和轨道差分序列">
+
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5.总结"></a>5.总结</h2><p>本文详细介绍了一种实时精密产品质量监测方法，与传统的服务端质量监测方法相比具有明显的优势，能够有效地识别实时精密产品中的小尺度故障，通过使用针对故障卫星的定权方案能够最大限度地减少这些故障对定位结果的影响，从而提高定位的精度和稳定性。虽然文中仅采用了中国区域的监测站网，但未来的研究工作中，可以将站网的覆盖范围扩展到全球，实现多系统卫星的全面和连续监测。同时，所提出的方法还可以扩展到实时PPP-RTK，为更多用户提供警报信息。</p>
+<h2 id="6-相关成果发表"><a href="#6-相关成果发表" class="headerlink" title="6. 相关成果发表"></a>6. <strong>相关成果发表</strong></h2><p>[1] Quality monitoring of real-time PPP service using isolation forest-based residual anomaly detection[J]. GPS Solutions, 2024, 28:118. </p>
+<p>[2] Real-time outlier detection of satellite orbit and clock products using reverse error estimation[J]. GPS Solutions, 2025, 29:2.</p>
+<p>[3] Improving PPP-RTK-based vehicle navigation in urban environments via multilayer perceptron-based NLOS signal detection[J]. GPS Solutions, 2024, 28:29.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%BA%E6%96%87%E5%88%86%E4%BA%AB/" class="category-chain-item">论文分享</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%BA%E6%96%87/" class="print-no-link">#论文</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【论文分享】基于孤立森林实现残差异常探测的实时PPP服务质量监测</div>
+      <div>https://great-whu.github.io/2024/10/30/论文-0001-梁达-基于孤立森林实现残差异常探测的实时PPP服务质量监测/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>GREAT-WHU</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月30日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/27/0001-%E5%85%B3%E4%BA%8EGREAT/" title="关于GREAT">
+                        <span class="hidden-mobile">关于GREAT</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com/GREAT-WHU" target="_blank" rel="nofollow noopener"><span>GREAT (GNSS+ Research, Application and Teaching) group, Wuhan University.</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
